@@ -1,13 +1,9 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-
 import { AuthDto } from './dto';
-import { AuthGuard } from './guards/auth.guard';
-import { GetCurrentUserId } from 'src/common/decorators/get-current-user-id.decorator';
-import { GetCurrentUser } from 'src/common/decorators/get-current-user.decorator';
-import { Roles } from 'src/common/decorators/roles.decorator';
-import { RolesGuard } from 'src/common/guards/roles.guard';
+import { GetCurrentUserId } from 'src/shared/decorators/get-current-user-id.decorator';
+import { GetCurrentUser } from 'src/shared/decorators/get-current-user.decorator';
+import { Auth } from 'src/shared/decorators/auth/auth.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -23,8 +19,7 @@ export class AuthController {
     return this.authService.logout(userId);
   }
 
-  @UseGuards(AuthGuard, RolesGuard)
-  @Roles('ADMIN')
+  @Auth('ADMIN', 'USER')
   @Get('me')
   async me(@GetCurrentUserId() userId: number, @GetCurrentUser() user: any) {
     console.log(userId);

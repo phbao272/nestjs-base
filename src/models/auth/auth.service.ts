@@ -6,7 +6,7 @@ import { AuthDto } from './dto';
 import { Tokens } from './types';
 import { PrismaService } from 'src/shared/prisma/prisma.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { JWT_CONSTANTS } from 'src/utils/constants';
+import { JWT_CONSTANTS } from 'src/shared/utils/constants';
 
 @Injectable()
 export class AuthService {
@@ -49,6 +49,8 @@ export class AuthService {
         email: dto.email,
       },
     });
+
+    type user = typeof this.prisma.user;
 
     if (!user) throw new ForbiddenException('Access Denied');
 
