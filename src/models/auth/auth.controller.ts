@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
+import { CredentialsDto } from './dto';
 import { GetCurrentUserId } from 'src/shared/decorators/get-current-user-id.decorator';
 import { GetCurrentUser } from 'src/shared/decorators/get-current-user.decorator';
 import { Auth } from 'src/shared/decorators/auth/auth.decorator';
@@ -10,7 +10,7 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() loginDto: AuthDto) {
+  async login(@Body() loginDto: CredentialsDto) {
     return this.authService.signinLocal(loginDto);
   }
 

@@ -1,5 +1,9 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './models/app.module';
+import {
+  AllExceptionsFilter,
+  ZodValidationExceptionFilter,
+} from '@shared/filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -11,6 +15,12 @@ async function bootstrap() {
     credentials: true,
   });
 
+  const httpAdapterHost = app.get(HttpAdapterHost);
+
+  app.useGlobalFilters(
+    new AllExceptionsFilter(httpAdapterHost),
+    new ZodValidationExceptionFilter(httpAdapterHost),
+  );
   // app.useGlobalGuards();
 
   await app.listen(PORT, () =>
